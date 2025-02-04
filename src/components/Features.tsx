@@ -1,21 +1,21 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Shield, Sparkles } from "lucide-react";
+import { BarChart3, Users, Trophy, ArrowRight } from "lucide-react";
 
 const features = [
   {
-    icon: Zap,
-    title: "Lightning Fast",
-    description: "Experience unparalleled speed and performance.",
+    icon: BarChart3,
+    title: "Match Statistics",
+    description: "Comprehensive match data including possession, shots, passes, and more.",
   },
   {
-    icon: Shield,
-    title: "Secure by Design",
-    description: "Built with security at its core, ensuring your peace of mind.",
+    icon: Users,
+    title: "Player Analysis",
+    description: "Compare players across different metrics and track their performance.",
   },
   {
-    icon: Sparkles,
-    title: "Elegant Interface",
-    description: "Beautiful, intuitive design that puts you in control.",
+    icon: Trophy,
+    title: "Team Rankings",
+    description: "Up-to-date team rankings and performance analytics across leagues.",
   },
 ];
 
@@ -28,11 +28,10 @@ export const Features = () => {
             Features
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-            Crafted for Excellence
+            Advanced Football Analytics
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Every feature is thoughtfully designed and implemented with precision,
-            ensuring a seamless experience.
+            Access detailed statistics and insights to understand the beautiful game better.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
