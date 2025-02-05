@@ -13,7 +13,7 @@ export const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <BarChart3 className="h-6 w-6" />
-            <span className="font-bold text-xl">FootyStatify</span>
+            <span className="font-bold text-xl">Estrella</span>
           </Link>
           <div className="hidden md:flex space-x-6">
             <Link to="/matches" className="text-muted-foreground hover:text-foreground transition-colors">
