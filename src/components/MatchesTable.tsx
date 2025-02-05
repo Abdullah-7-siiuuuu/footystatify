@@ -10,6 +10,13 @@ import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const matchData = [
   {
@@ -57,10 +64,50 @@ const matchData = [
       fouls: { home: 7, away: 11 }
     }
   },
+  {
+    id: 4,
+    homeTeam: "AC Milan",
+    awayTeam: "Inter Milan",
+    score: "1 - 2",
+    date: "2024-03-12",
+    competition: "Serie A",
+    stats: {
+      possession: { home: 48, away: 52 },
+      shots: { home: 10, away: 14 },
+      shotsOnTarget: { home: 4, away: 6 },
+      corners: { home: 5, away: 7 },
+      fouls: { home: 12, away: 9 }
+    }
+  },
+  {
+    id: 5,
+    homeTeam: "PSG",
+    awayTeam: "Marseille",
+    score: "3 - 0",
+    date: "2024-03-11",
+    competition: "Ligue 1",
+    stats: {
+      possession: { home: 58, away: 42 },
+      shots: { home: 16, away: 8 },
+      shotsOnTarget: { home: 7, away: 2 },
+      corners: { home: 8, away: 4 },
+      fouls: { home: 9, away: 13 }
+    }
+  }
+];
+
+const leagues = [
+  "All Leagues",
+  "Premier League",
+  "La Liga",
+  "Bundesliga",
+  "Serie A",
+  "Ligue 1"
 ];
 
 export const MatchesTable = () => {
   const [selectedMatch, setSelectedMatch] = useState<number | null>(null);
+  const [selectedLeague, setSelectedLeague] = useState<string>("All Leagues");
 
   const getStatsChartData = (matchId: number) => {
     const match = matchData.find(m => m.id === matchId);
@@ -95,6 +142,10 @@ export const MatchesTable = () => {
     ];
   };
 
+  const filteredMatches = matchData.filter(match => 
+    selectedLeague === "All Leagues" ? true : match.competition === selectedLeague
+  );
+
   return (
     <div className="w-full space-y-6">
       <motion.div
@@ -102,7 +153,21 @@ export const MatchesTable = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-2xl font-bold mb-4">Recent Matches</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Recent Matches</h2>
+          <Select value={selectedLeague} onValueChange={setSelectedLeague}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select League" />
+            </SelectTrigger>
+            <SelectContent>
+              {leagues.map((league) => (
+                <SelectItem key={league} value={league}>
+                  {league}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -116,7 +181,7 @@ export const MatchesTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {matchData.map((match) => (
+              {filteredMatches.map((match) => (
                 <TableRow 
                   key={match.id}
                   className="cursor-pointer hover:bg-secondary/50"
