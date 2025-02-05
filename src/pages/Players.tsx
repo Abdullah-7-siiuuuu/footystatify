@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { PlayerCard } from "@/components/PlayerCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
+import { Navbar } from "@/components/Navbar";
 
 // Mock data for initial development
 const PLAYERS = [
@@ -55,11 +56,12 @@ const Players = () => {
   );
 
   return (
-    <div className="min-h-screen p-6 bg-background">
+    <div className="min-h-screen bg-background">
+      <Navbar />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto space-y-6"
+        className="container mx-auto space-y-6 p-6 pt-24"
       >
         <h1 className="text-4xl font-bold">Players</h1>
         
