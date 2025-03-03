@@ -1,129 +1,63 @@
 
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PlayerCard } from "@/components/PlayerCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
-
-// Mock data for initial development
-const PLAYERS = [
-  {
-    id: 1,
-    name: "Marcus Rashford",
-    team: "Manchester United",
-    position: "Forward",
-    stats: {
-      goals: 15,
-      assists: 7,
-      matches: 28,
-    },
-    detailedStats: {
-      passingAccuracy: 78,
-      shotsOnTarget: 42,
-      tacklesWon: 24,
-      possession: 65,
-      minutesPlayed: 2340,
-      distanceCovered: 245.6,
-      yellowCards: 2,
-      redCards: 0,
-      formTrend: [
-        { match: "vs ARS", rating: 7.2 },
-        { match: "vs CHE", rating: 6.5 },
-        { match: "vs LIV", rating: 8.1 },
-        { match: "vs TOT", rating: 7.8 },
-        { match: "vs MCI", rating: 6.9 },
-      ],
-      heatmap: [
-        { zone: "Left Wing", value: 65 },
-        { zone: "Center", value: 25 },
-        { zone: "Right Wing", value: 10 },
-      ],
-      xGPerMatch: 0.68,
-    },
-    image: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    name: "Kevin De Bruyne",
-    team: "Manchester City",
-    position: "Midfielder",
-    stats: {
-      goals: 8,
-      assists: 16,
-      matches: 25,
-    },
-    detailedStats: {
-      passingAccuracy: 89,
-      shotsOnTarget: 28,
-      tacklesWon: 32,
-      possession: 72,
-      minutesPlayed: 2160,
-      distanceCovered: 268.3,
-      yellowCards: 3,
-      redCards: 0,
-      formTrend: [
-        { match: "vs ARS", rating: 8.5 },
-        { match: "vs CHE", rating: 7.9 },
-        { match: "vs LIV", rating: 8.7 },
-        { match: "vs TOT", rating: 7.2 },
-        { match: "vs MUN", rating: 9.1 },
-      ],
-      heatmap: [
-        { zone: "Left Wing", value: 15 },
-        { zone: "Center", value: 70 },
-        { zone: "Right Wing", value: 15 },
-      ],
-      xGPerMatch: 0.42,
-    },
-    image: "/placeholder.svg"
-  },
-  {
-    id: 3,
-    name: "Virgil van Dijk",
-    team: "Liverpool",
-    position: "Defender",
-    stats: {
-      goals: 3,
-      assists: 1,
-      matches: 30,
-    },
-    detailedStats: {
-      passingAccuracy: 92,
-      shotsOnTarget: 10,
-      tacklesWon: 65,
-      possession: 58,
-      minutesPlayed: 2700,
-      distanceCovered: 224.7,
-      yellowCards: 4,
-      redCards: 0,
-      formTrend: [
-        { match: "vs ARS", rating: 7.8 },
-        { match: "vs CHE", rating: 8.2 },
-        { match: "vs MCI", rating: 7.5 },
-        { match: "vs TOT", rating: 8.0 },
-        { match: "vs MUN", rating: 8.4 },
-      ],
-      heatmap: [
-        { zone: "Left CB", value: 45 },
-        { zone: "Right CB", value: 55 },
-        { zone: "CDM", value: 10 },
-      ],
-      xGPerMatch: 0.12,
-    },
-    image: "/placeholder.svg"
-  }
-];
+import { PlayerService, UseMockData, Player } from "@/services/api";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const Players = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   
-  const filteredPlayers = PLAYERS.filter(player => 
-    player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    player.team.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    player.position.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Set up debounced search to avoid too many API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch players data using React Query
+  const { data: players, isLoading, error } = useQuery({
+    queryKey: ['players', debouncedSearch],
+    queryFn: () => {
+      // Check if we want to use mock data (no API available)
+      const useMockData = !import.meta.env.VITE_API_URL;
+      
+      if (useMockData) {
+        // Simulate API delay with mock data
+        return UseMockData.delay(800).then(() => {
+          const mockPlayers = UseMockData.getPlayers();
+          // Apply filtering in-memory for mock data
+          if (debouncedSearch) {
+            return mockPlayers.filter(player => 
+              player.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+              player.team.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+              player.position.toLowerCase().includes(debouncedSearch.toLowerCase())
+            );
+          }
+          return mockPlayers;
+        });
+      }
+      
+      // Use real API
+      return PlayerService.getPlayers(debouncedSearch);
+    },
+    staleTime: 60000, // 1 minute
+  });
+
+  // Show error toast if API request fails
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to load players data. Using cached data if available.");
+    }
+  }, [error]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -146,11 +80,23 @@ const Players = () => {
         </div>
 
         <ScrollArea className="h-[calc(100vh-200px)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPlayers.map((player) => (
-              <PlayerCard key={player.id} player={player} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <span className="ml-2 text-muted-foreground">Loading players...</span>
+            </div>
+          ) : !players || players.length === 0 ? (
+            <div className="text-center p-12 text-muted-foreground">
+              <p className="text-lg">No players found</p>
+              <p className="text-sm mt-2">Try adjusting your search criteria</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {players.map((player) => (
+                <PlayerCard key={player.id} player={player} />
+              ))}
+            </div>
+          )}
         </ScrollArea>
       </motion.div>
     </div>
