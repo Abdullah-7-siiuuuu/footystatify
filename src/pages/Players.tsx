@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,29 @@ const PLAYERS = [
       assists: 7,
       matches: 28,
     },
+    detailedStats: {
+      passingAccuracy: 78,
+      shotsOnTarget: 42,
+      tacklesWon: 24,
+      possession: 65,
+      minutesPlayed: 2340,
+      distanceCovered: 245.6,
+      yellowCards: 2,
+      redCards: 0,
+      formTrend: [
+        { match: "vs ARS", rating: 7.2 },
+        { match: "vs CHE", rating: 6.5 },
+        { match: "vs LIV", rating: 8.1 },
+        { match: "vs TOT", rating: 7.8 },
+        { match: "vs MCI", rating: 6.9 },
+      ],
+      heatmap: [
+        { zone: "Left Wing", value: 65 },
+        { zone: "Center", value: 25 },
+        { zone: "Right Wing", value: 10 },
+      ],
+      xGPerMatch: 0.68,
+    },
     image: "/placeholder.svg"
   },
   {
@@ -30,6 +54,29 @@ const PLAYERS = [
       assists: 16,
       matches: 25,
     },
+    detailedStats: {
+      passingAccuracy: 89,
+      shotsOnTarget: 28,
+      tacklesWon: 32,
+      possession: 72,
+      minutesPlayed: 2160,
+      distanceCovered: 268.3,
+      yellowCards: 3,
+      redCards: 0,
+      formTrend: [
+        { match: "vs ARS", rating: 8.5 },
+        { match: "vs CHE", rating: 7.9 },
+        { match: "vs LIV", rating: 8.7 },
+        { match: "vs TOT", rating: 7.2 },
+        { match: "vs MUN", rating: 9.1 },
+      ],
+      heatmap: [
+        { zone: "Left Wing", value: 15 },
+        { zone: "Center", value: 70 },
+        { zone: "Right Wing", value: 15 },
+      ],
+      xGPerMatch: 0.42,
+    },
     image: "/placeholder.svg"
   },
   {
@@ -41,6 +88,29 @@ const PLAYERS = [
       goals: 3,
       assists: 1,
       matches: 30,
+    },
+    detailedStats: {
+      passingAccuracy: 92,
+      shotsOnTarget: 10,
+      tacklesWon: 65,
+      possession: 58,
+      minutesPlayed: 2700,
+      distanceCovered: 224.7,
+      yellowCards: 4,
+      redCards: 0,
+      formTrend: [
+        { match: "vs ARS", rating: 7.8 },
+        { match: "vs CHE", rating: 8.2 },
+        { match: "vs MCI", rating: 7.5 },
+        { match: "vs TOT", rating: 8.0 },
+        { match: "vs MUN", rating: 8.4 },
+      ],
+      heatmap: [
+        { zone: "Left CB", value: 45 },
+        { zone: "Right CB", value: 55 },
+        { zone: "CDM", value: 10 },
+      ],
+      xGPerMatch: 0.12,
     },
     image: "/placeholder.svg"
   }
