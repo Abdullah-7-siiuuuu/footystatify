@@ -1,4 +1,4 @@
-<lov-code>
+
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Select,
@@ -329,7 +329,7 @@ export const MatchesTable = () => {
   const [predictionModel, setPredictionModel] = useState<tf.LayersModel | null>(null);
 
   // Initialize the prediction model
-  useState(() => {
+  useEffect(() => {
     const initModel = async () => {
       const model = await buildPredictionModel();
       
@@ -350,7 +350,7 @@ export const MatchesTable = () => {
     };
     
     initModel();
-  });
+  }, []);
 
   const getBasicStatsChartData = (matchId: number) => {
     const match = matchData.find(m => m.id === matchId);
@@ -536,7 +536,10 @@ export const MatchesTable = () => {
                   <TableCell>
                     <button 
                       className="text-primary hover:underline"
-                      onClick={() => setSelectedMatch(selectedMatch === match.id ? null : match.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedMatch(selectedMatch === match.id ? null : match.id);
+                      }}
                     >
                       {selectedMatch === match.id ? 'Hide Stats' : 'Show Stats'}
                     </button>
@@ -731,4 +734,31 @@ export const MatchesTable = () => {
                       <div className="space-y-4">
                         <div className="p-4 bg-secondary/30 rounded-lg">
                           <h4 className="font-medium flex items-center gap-2 mb-2">
-                            <TrendingUp className="h-4 w-4 text-
+                            <TrendingUp className="h-4 w-4 text-primary" />
+                            Performance Analysis
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Advanced statistics show patterns in team performance across matches.
+                          </p>
+                        </div>
+                        <div className="p-4 bg-secondary/30 rounded-lg">
+                          <h4 className="font-medium flex items-center gap-2 mb-2">
+                            <AlertCircle className="h-4 w-4 text-yellow-500" />
+                            Key Factors
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Possession and passing accuracy are the strongest indicators of match outcome.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
