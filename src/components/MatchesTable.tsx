@@ -1,4 +1,3 @@
-
 import {
   Table,
   TableBody,
@@ -23,7 +22,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, AlertCircle, Award, PieChart as PieChartIcon, BarChart as BarChartIcon, Activity } from "lucide-react";
 import * as tf from '@tensorflow/tfjs';
 
-// Enhanced match data with more statistics
 const matchData = [
   {
     id: 1,
@@ -277,26 +275,20 @@ const leagues = [
   "Ligue 1"
 ];
 
-// Simple ML model for match prediction (in a real app, this would be more sophisticated)
 const buildPredictionModel = async () => {
-  // Create a simple model
   const model = tf.sequential();
   model.add(tf.layers.dense({inputShape: [6], units: 12, activation: 'relu'}));
   model.add(tf.layers.dense({units: 8, activation: 'relu'}));
-  model.add(tf.layers.dense({units: 3, activation: 'softmax'})); // home win, draw, away win
-
+  model.add(tf.layers.dense({units: 3, activation: 'softmax'}));
   model.compile({
     optimizer: tf.train.adam(),
     loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   });
-
   return model;
 };
 
-// Function to predict match outcome
 const predictMatchOutcome = (homeStats: any, awayStats: any, model: tf.LayersModel) => {
-  // Create input features
   const features = [
     homeStats.possession.home / 100,
     homeStats.shots.home / 20,
@@ -306,12 +298,10 @@ const predictMatchOutcome = (homeStats: any, awayStats: any, model: tf.LayersMod
     awayStats.passingAccuracy.away / 100,
   ];
   
-  // Make prediction
   const inputTensor = tf.tensor2d([features]);
   const prediction = model.predict(inputTensor) as tf.Tensor;
   const predictionArray = prediction.dataSync();
   
-  // Clean up
   inputTensor.dispose();
   prediction.dispose();
   
@@ -328,12 +318,10 @@ export const MatchesTable = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
   const [predictionModel, setPredictionModel] = useState<tf.LayersModel | null>(null);
 
-  // Initialize the prediction model
   useEffect(() => {
     const initModel = async () => {
       const model = await buildPredictionModel();
       
-      // Dummy training (in real app, would use historical data)
       const xs = tf.randomNormal([100, 6]);
       const ys = tf.randomUniform([100, 3]);
       
@@ -536,10 +524,7 @@ export const MatchesTable = () => {
                   <TableCell>
                     <button 
                       className="text-primary hover:underline"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedMatch(selectedMatch === match.id ? null : match.id);
-                      }}
+                      onClick={() => setSelectedMatch(selectedMatch === match.id ? null : match.id)}
                     >
                       {selectedMatch === match.id ? 'Hide Stats' : 'Show Stats'}
                     </button>
@@ -648,10 +633,10 @@ export const MatchesTable = () => {
                       <Line 
                         type="stepAfter" 
                         dataKey="value" 
-                        stroke="#888" 
-                        dot={{ 
-                          stroke: payload => payload.value > 0 ? '#4f46e5' : '#e11d48',
-                          fill: payload => payload.value > 0 ? '#4f46e5' : '#e11d48',
+                        stroke="#888"
+                        dot={{
+                          stroke: "#888",
+                          fill: (data: any) => data.value > 0 ? "#4f46e5" : "#e11d48",
                           r: 5
                         }}
                         activeDot={{ r: 8 }}
