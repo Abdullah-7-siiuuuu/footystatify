@@ -1,3 +1,4 @@
+
 import {
   Table,
   TableBody,
@@ -636,10 +637,15 @@ export const MatchesTable = () => {
                         stroke="#888"
                         dot={{
                           stroke: "#888",
-                          fill: (data: any) => data.value > 0 ? "#4f46e5" : "#e11d48",
+                          // Fix: Replace the function with a proper dot style object
+                          fill: "#888",
                           r: 5
                         }}
-                        activeDot={{ r: 8 }}
+                        activeDot={{
+                          r: 8,
+                          // Add the dynamic fill color logic to the activeDot prop instead
+                          fill: (data: any) => data.value > 0 ? "#4f46e5" : "#e11d48"
+                        }}
                         isAnimationActive={true}
                       />
                     </LineChart>
