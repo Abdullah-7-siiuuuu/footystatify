@@ -1,4 +1,3 @@
-
 import {
   Table,
   TableBody,
@@ -637,14 +636,12 @@ export const MatchesTable = () => {
                         stroke="#888"
                         dot={{
                           stroke: "#888",
-                          // Fix: Replace the function with a proper dot style object
                           fill: "#888",
                           r: 5
                         }}
                         activeDot={{
                           r: 8,
-                          // Add the dynamic fill color logic to the activeDot prop instead
-                          fill: (data: any) => data.value > 0 ? "#4f46e5" : "#e11d48"
+                          fill: "#4f46e5" // Use a fixed color instead of a function
                         }}
                         isAnimationActive={true}
                       />
@@ -734,22 +731,4 @@ export const MatchesTable = () => {
                         </div>
                         <div className="p-4 bg-secondary/30 rounded-lg">
                           <h4 className="font-medium flex items-center gap-2 mb-2">
-                            <AlertCircle className="h-4 w-4 text-yellow-500" />
-                            Key Factors
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Possession and passing accuracy are the strongest indicators of match outcome.
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
+                            <AlertCircle className="h-4 w-4 text-yellow-500"

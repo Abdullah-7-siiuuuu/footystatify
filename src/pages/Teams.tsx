@@ -47,13 +47,16 @@ const Teams = () => {
           />
         </div>
 
-        <TabsContent value="standings" className="mt-6 space-y-6">
-          <TeamRankings searchQuery={searchQuery} />
-        </TabsContent>
-        
-        <TabsContent value="calendar" className="mt-6">
-          <MatchCalendar />
-        </TabsContent>
+        {/* Fix: Wrap TabsContent components in the same Tabs component */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsContent value="standings" className="mt-6 space-y-6">
+            <TeamRankings searchQuery={searchQuery} />
+          </TabsContent>
+          
+          <TabsContent value="calendar" className="mt-6">
+            <MatchCalendar />
+          </TabsContent>
+        </Tabs>
       </motion.div>
     </div>
   );
