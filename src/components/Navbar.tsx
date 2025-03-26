@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { BarChart3, Trophy } from "lucide-react";
+import { BarChart3, Trophy, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const Navbar = () => {
