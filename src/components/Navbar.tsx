@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { BarChart3, Trophy, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -39,6 +40,9 @@ export const Navbar = () => {
             <Link to="/stats" className={`transition-colors ${isActive('/stats')}`}>
               Statistics
             </Link>
+          </div>
+          <div>
+            <ModeToggle />
           </div>
         </div>
       </div>

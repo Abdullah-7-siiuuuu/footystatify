@@ -1,45 +1,44 @@
-
 import { Trophy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 
-// Updated to include more detailed stats
+// Updated to include more detailed stats, badges and team colors
 const leagueData = {
   "Premier League": [
-    { id: 1, name: "Manchester City", points: 63, position: 1, played: 29, wins: 19, draws: 6, losses: 4, goalsFor: 63, goalsAgainst: 28, goalDifference: 35 },
-    { id: 2, name: "Liverpool", points: 61, position: 2, played: 29, wins: 18, draws: 7, losses: 4, goalsFor: 65, goalsAgainst: 30, goalDifference: 35 },
-    { id: 3, name: "Arsenal", points: 58, position: 3, played: 29, wins: 18, draws: 4, losses: 7, goalsFor: 59, goalsAgainst: 31, goalDifference: 28 },
-    { id: 4, name: "Aston Villa", points: 55, position: 4, played: 30, wins: 16, draws: 7, losses: 7, goalsFor: 58, goalsAgainst: 42, goalDifference: 16 },
-    { id: 5, name: "Tottenham", points: 53, position: 5, played: 30, wins: 16, draws: 5, losses: 9, goalsFor: 59, goalsAgainst: 45, goalDifference: 14 },
+    { id: 1, name: "Manchester City", points: 63, position: 1, played: 29, wins: 19, draws: 6, losses: 4, goalsFor: 63, goalsAgainst: 28, goalDifference: 35, badge: "https://resources.premierleague.com/premierleague/badges/t43.png", primaryColor: "#6CABDD" },
+    { id: 2, name: "Liverpool", points: 61, position: 2, played: 29, wins: 18, draws: 7, losses: 4, goalsFor: 65, goalsAgainst: 30, goalDifference: 35, badge: "https://resources.premierleague.com/premierleague/badges/t14.png", primaryColor: "#C8102E" },
+    { id: 3, name: "Arsenal", points: 58, position: 3, played: 29, wins: 18, draws: 4, losses: 7, goalsFor: 59, goalsAgainst: 31, goalDifference: 28, badge: "https://resources.premierleague.com/premierleague/badges/t3.png", primaryColor: "#EF0107" },
+    { id: 4, name: "Aston Villa", points: 55, position: 4, played: 30, wins: 16, draws: 7, losses: 7, goalsFor: 58, goalsAgainst: 42, goalDifference: 16, badge: "https://resources.premierleague.com/premierleague/badges/t7.png", primaryColor: "#95BFE5" },
+    { id: 5, name: "Tottenham", points: 53, position: 5, played: 30, wins: 16, draws: 5, losses: 9, goalsFor: 59, goalsAgainst: 45, goalDifference: 14, badge: "https://resources.premierleague.com/premierleague/badges/t6.png", primaryColor: "#132257" },
   ],
   "La Liga": [
-    { id: 6, name: "Real Madrid", points: 65, position: 1, played: 29, wins: 20, draws: 5, losses: 4, goalsFor: 56, goalsAgainst: 18, goalDifference: 38 },
-    { id: 7, name: "Barcelona", points: 61, position: 2, played: 29, wins: 18, draws: 7, losses: 4, goalsFor: 58, goalsAgainst: 34, goalDifference: 24 },
-    { id: 8, name: "Atletico Madrid", points: 55, position: 3, played: 30, wins: 17, draws: 4, losses: 9, goalsFor: 53, goalsAgainst: 36, goalDifference: 17 },
-    { id: 9, name: "Sevilla", points: 49, position: 4, played: 30, wins: 15, draws: 4, losses: 11, goalsFor: 44, goalsAgainst: 39, goalDifference: 5 },
-    { id: 10, name: "Real Sociedad", points: 46, position: 5, played: 30, wins: 13, draws: 7, losses: 10, goalsFor: 42, goalsAgainst: 38, goalDifference: 4 },
+    { id: 6, name: "Real Madrid", points: 65, position: 1, played: 29, wins: 20, draws: 5, losses: 4, goalsFor: 56, goalsAgainst: 18, goalDifference: 38, badge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg", primaryColor: "#FFFFFF" },
+    { id: 7, name: "Barcelona", points: 61, position: 2, played: 29, wins: 18, draws: 7, losses: 4, goalsFor: 58, goalsAgainst: 34, goalDifference: 24, badge: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg", primaryColor: "#004D98" },
+    { id: 8, name: "Atletico Madrid", points: 55, position: 3, played: 30, wins: 17, draws: 4, losses: 9, goalsFor: 53, goalsAgainst: 36, goalDifference: 17, badge: "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg", primaryColor: "#CB3524" },
+    { id: 9, name: "Sevilla", points: 49, position: 4, played: 30, wins: 15, draws: 4, losses: 11, goalsFor: 44, goalsAgainst: 39, goalDifference: 5, badge: "https://upload.wikimedia.org/wikipedia/en/3/3b/Sevilla_FC_logo.svg", primaryColor: "#CB3524" },
+    { id: 10, name: "Real Sociedad", points: 46, position: 5, played: 30, wins: 13, draws: 7, losses: 10, goalsFor: 42, goalsAgainst: 38, goalDifference: 4, badge: "https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg", primaryColor: "#0B67B2" },
   ],
   "Bundesliga": [
-    { id: 11, name: "Bayern Munich", points: 64, position: 1, played: 28, wins: 20, draws: 4, losses: 4, goalsFor: 72, goalsAgainst: 32, goalDifference: 40 },
-    { id: 12, name: "Borussia Dortmund", points: 58, position: 2, played: 28, wins: 18, draws: 4, losses: 6, goalsFor: 61, goalsAgainst: 34, goalDifference: 27 },
-    { id: 13, name: "RB Leipzig", points: 56, position: 3, played: 28, wins: 17, draws: 5, losses: 6, goalsFor: 59, goalsAgainst: 30, goalDifference: 29 },
-    { id: 14, name: "Bayer Leverkusen", points: 53, position: 4, played: 28, wins: 15, draws: 8, losses: 5, goalsFor: 57, goalsAgainst: 33, goalDifference: 24 },
-    { id: 15, name: "Eintracht Frankfurt", points: 48, position: 5, played: 28, wins: 13, draws: 9, losses: 6, goalsFor: 49, goalsAgainst: 37, goalDifference: 12 },
+    { id: 11, name: "Bayern Munich", points: 64, position: 1, played: 28, wins: 20, draws: 4, losses: 4, goalsFor: 72, goalsAgainst: 32, goalDifference: 40, badge: "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg", primaryColor: "#DC052D" },
+    { id: 12, name: "Borussia Dortmund", points: 58, position: 2, played: 28, wins: 18, draws: 4, losses: 6, goalsFor: 61, goalsAgainst: 34, goalDifference: 27, badge: "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg", primaryColor: "#FDE100" },
+    { id: 13, name: "RB Leipzig", points: 56, position: 3, played: 28, wins: 17, draws: 5, losses: 6, goalsFor: 59, goalsAgainst: 30, goalDifference: 29, badge: "https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg", primaryColor: "#DD0741" },
+    { id: 14, name: "Bayer Leverkusen", points: 53, position: 4, played: 28, wins: 15, draws: 8, losses: 5, goalsFor: 57, goalsAgainst: 33, goalDifference: 24, badge: "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg", primaryColor: "#E32221" },
+    { id: 15, name: "Eintracht Frankfurt", points: 48, position: 5, played: 28, wins: 13, draws: 9, losses: 6, goalsFor: 49, goalsAgainst: 37, goalDifference: 12, badge: "https://upload.wikimedia.org/wikipedia/commons/0/04/Eintracht_Frankfurt_Logo.svg", primaryColor: "#E1000F" },
   ],
   "Serie A": [
-    { id: 16, name: "Inter Milan", points: 66, position: 1, played: 29, wins: 21, draws: 3, losses: 5, goalsFor: 65, goalsAgainst: 25, goalDifference: 40 },
-    { id: 17, name: "AC Milan", points: 61, position: 2, played: 29, wins: 19, draws: 4, losses: 6, goalsFor: 56, goalsAgainst: 32, goalDifference: 24 },
-    { id: 18, name: "Napoli", points: 59, position: 3, played: 29, wins: 18, draws: 5, losses: 6, goalsFor: 55, goalsAgainst: 27, goalDifference: 28 },
-    { id: 19, name: "Juventus", points: 57, position: 4, played: 29, wins: 16, draws: 9, losses: 4, goalsFor: 46, goalsAgainst: 25, goalDifference: 21 },
-    { id: 20, name: "Atalanta", points: 51, position: 5, played: 29, wins: 15, draws: 6, losses: 8, goalsFor: 55, goalsAgainst: 33, goalDifference: 22 },
+    { id: 16, name: "Inter Milan", points: 66, position: 1, played: 29, wins: 21, draws: 3, losses: 5, goalsFor: 65, goalsAgainst: 25, goalDifference: 40, badge: "https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg", primaryColor: "#0B1560" },
+    { id: 17, name: "AC Milan", points: 61, position: 2, played: 29, wins: 19, draws: 4, losses: 6, goalsFor: 56, goalsAgainst: 32, goalDifference: 24, badge: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg", primaryColor: "#FB090B" },
+    { id: 18, name: "Napoli", points: 59, position: 3, played: 29, wins: 18, draws: 5, losses: 6, goalsFor: 55, goalsAgainst: 27, goalDifference: 28, badge: "https://upload.wikimedia.org/wikipedia/commons/2/2d/SSC_Napoli_%282021%29.svg", primaryColor: "#12A0D7" },
+    { id: 19, name: "Juventus", points: 57, position: 4, played: 29, wins: 16, draws: 9, losses: 4, goalsFor: 46, goalsAgainst: 25, goalDifference: 21, badge: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Juventus_FC_2017_icon_%28black%29.svg", primaryColor: "#000000" },
+    { id: 20, name: "Atalanta", points: 51, position: 5, played: 29, wins: 15, draws: 6, losses: 8, goalsFor: 55, goalsAgainst: 33, goalDifference: 22, badge: "https://upload.wikimedia.org/wikipedia/en/6/66/AtalantaBC.svg", primaryColor: "#1E71B8" },
   ],
   "Champions League": [
-    { id: 21, name: "Bayern Munich", points: 15, position: 1, played: 6, wins: 5, draws: 0, losses: 1, goalsFor: 18, goalsAgainst: 5, goalDifference: 13 },
-    { id: 22, name: "Manchester City", points: 13, position: 2, played: 6, wins: 4, draws: 1, losses: 1, goalsFor: 15, goalsAgainst: 7, goalDifference: 8 },
-    { id: 23, name: "Real Madrid", points: 12, position: 3, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 12, goalsAgainst: 7, goalDifference: 5 },
-    { id: 24, name: "Liverpool", points: 12, position: 4, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 13, goalsAgainst: 9, goalDifference: 4 },
-    { id: 25, name: "PSG", points: 10, position: 5, played: 6, wins: 3, draws: 1, losses: 2, goalsFor: 9, goalsAgainst: 8, goalDifference: 1 },
+    { id: 21, name: "Bayern Munich", points: 15, position: 1, played: 6, wins: 5, draws: 0, losses: 1, goalsFor: 18, goalsAgainst: 5, goalDifference: 13, badge: "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg", primaryColor: "#DC052D" },
+    { id: 22, name: "Manchester City", points: 13, position: 2, played: 6, wins: 4, draws: 1, losses: 1, goalsFor: 15, goalsAgainst: 7, goalDifference: 8, badge: "https://resources.premierleague.com/premierleague/badges/t43.png", primaryColor: "#6CABDD" },
+    { id: 23, name: "Real Madrid", points: 12, position: 3, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 12, goalsAgainst: 7, goalDifference: 5, badge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg", primaryColor: "#FFFFFF" },
+    { id: 24, name: "Liverpool", points: 12, position: 4, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 13, goalsAgainst: 9, goalDifference: 4, badge: "https://resources.premierleague.com/premierleague/badges/t14.png", primaryColor: "#C8102E" },
+    { id: 25, name: "PSG", points: 10, position: 5, played: 6, wins: 3, draws: 1, losses: 2, goalsFor: 9, goalsAgainst: 8, goalDifference: 1, badge: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", primaryColor: "#004170" },
   ],
 };
 
@@ -56,6 +55,8 @@ export type Team = {
   goalsFor: number;
   goalsAgainst: number;
   goalDifference: number;
+  badge?: string;
+  primaryColor?: string;
 };
 
 export const getTeamById = (id: number): Team | undefined => {

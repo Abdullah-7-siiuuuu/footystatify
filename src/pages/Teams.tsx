@@ -6,6 +6,7 @@ import { Search, Users, Loader2, Shield } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { leagueData, Team } from "@/components/TeamRankings";
 
@@ -73,7 +74,16 @@ const TeamCard = ({ team, onClick }: { team: Team & { league: string }, onClick:
         <CardContent className="p-0">
           <div className="p-6">
             <div className="flex items-center gap-3 mb-4">
-              <Shield className="h-10 w-10 text-primary" />
+              {team.badge ? (
+                <Avatar className="h-12 w-12 rounded-none">
+                  <AvatarImage src={team.badge} alt={team.name} />
+                  <AvatarFallback className="rounded-none">
+                    <Shield className="h-10 w-10 text-primary" />
+                  </AvatarFallback>
+                </Avatar>
+              ) : (
+                <Shield className="h-10 w-10 text-primary" />
+              )}
               <div>
                 <h3 className="font-bold text-xl">{team.name}</h3>
                 <p className="text-muted-foreground text-sm">{team.league}</p>

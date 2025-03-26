@@ -1,5 +1,6 @@
+
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Trophy, Activity, Calendar as CalendarIcon, Users, CircleDot, Flag } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   BarChart, 
   Bar, 
@@ -35,6 +37,19 @@ const TeamDetails = () => {
   
   const teamId = id ? parseInt(id) : 0;
   const team = getTeamById(teamId);
+  
+  useEffect(() => {
+    if (team && team.primaryColor) {
+      document.documentElement.style.setProperty(
+        '--team-color', 
+        team.primaryColor
+      );
+      
+      return () => {
+        document.documentElement.style.removeProperty('--team-color');
+      };
+    }
+  }, [team]);
   
   if (!team) {
     return (
@@ -115,10 +130,19 @@ const TeamDetails = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <div 
+        className="absolute inset-0 z-0 opacity-10"
+        style={{
+          background: team.primaryColor ? 
+            `linear-gradient(135deg, ${team.primaryColor} 0%, transparent 100%)` : 
+            'none',
+          pointerEvents: 'none'
+        }}
+      />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto space-y-6 p-6 pt-24"
+        className="container mx-auto space-y-6 p-6 pt-24 relative z-10"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -129,8 +153,20 @@ const TeamDetails = () => {
             >
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Teams
             </Button>
-            <h1 className="text-4xl font-bold">{team.name}</h1>
-            <p className="text-muted-foreground">{teamLeague} • Position: {team.position}</p>
+            <div className="flex items-center gap-4">
+              {team.badge && (
+                <Avatar className="h-16 w-16 rounded-none">
+                  <AvatarImage src={team.badge} alt={team.name} />
+                  <AvatarFallback className="rounded-none">
+                    <Trophy className="h-12 w-12 text-primary" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <div>
+                <h1 className="text-4xl font-bold">{team.name}</h1>
+                <p className="text-muted-foreground">{teamLeague} • Position: {team.position}</p>
+              </div>
+            </div>
           </div>
           
           <div className="flex items-center bg-primary/10 rounded-lg p-3">
