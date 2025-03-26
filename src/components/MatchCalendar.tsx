@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
-import { format, isSameDay, addDays, subDays } from "date-fns";
+import { format, isSameDay, addDays, subDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Sample match data
+// Enhanced match data with complete dates for May 2024
 const calendarMatchData = [
   {
     id: 1,
@@ -18,6 +18,8 @@ const calendarMatchData = [
     date: "2024-05-15T15:00:00",
     competition: "Premier League",
     status: "upcoming",
+    venue: "Old Trafford",
+    tickets: "Limited Availability"
   },
   {
     id: 2,
@@ -27,6 +29,8 @@ const calendarMatchData = [
     competition: "La Liga",
     score: "3 - 3",
     status: "completed",
+    venue: "Camp Nou",
+    attendance: "95,000"
   },
   {
     id: 3,
@@ -36,6 +40,8 @@ const calendarMatchData = [
     competition: "Bundesliga",
     score: "4 - 0",
     status: "completed",
+    venue: "Allianz Arena",
+    attendance: "75,000"
   },
   {
     id: 4,
@@ -44,6 +50,8 @@ const calendarMatchData = [
     date: "2024-05-17T19:45:00",
     competition: "Serie A",
     status: "upcoming",
+    venue: "San Siro",
+    tickets: "Sold Out"
   },
   {
     id: 5,
@@ -52,6 +60,8 @@ const calendarMatchData = [
     date: "2024-05-18T20:00:00",
     competition: "Ligue 1",
     status: "upcoming",
+    venue: "Parc des Princes",
+    tickets: "Available"
   },
   {
     id: 6,
@@ -60,6 +70,8 @@ const calendarMatchData = [
     date: "2024-05-20T19:45:00",
     competition: "Premier League",
     status: "upcoming",
+    venue: "Emirates Stadium",
+    tickets: "Limited Availability"
   },
   {
     id: 7,
@@ -69,6 +81,8 @@ const calendarMatchData = [
     competition: "Eredivisie",
     score: "2 - 1",
     status: "completed",
+    venue: "Johan Cruyff Arena",
+    attendance: "52,000"
   },
   {
     id: 8,
@@ -78,11 +92,120 @@ const calendarMatchData = [
     competition: "Serie A",
     score: "1 - 0",
     status: "completed",
+    venue: "Allianz Stadium",
+    attendance: "41,500"
+  },
+  {
+    id: 9,
+    homeTeam: "Liverpool",
+    awayTeam: "Tottenham",
+    date: "2024-05-01T15:00:00",
+    competition: "Premier League",
+    score: "2 - 1",
+    status: "completed",
+    venue: "Anfield",
+    attendance: "53,000"
+  },
+  {
+    id: 10,
+    homeTeam: "Real Madrid",
+    awayTeam: "Atletico Madrid",
+    date: "2024-05-02T20:00:00",
+    competition: "La Liga",
+    score: "3 - 1",
+    status: "completed",
+    venue: "Santiago Bernabeu",
+    attendance: "80,000"
+  },
+  {
+    id: 11,
+    homeTeam: "Manchester City",
+    awayTeam: "Arsenal",
+    date: "2024-05-04T17:30:00",
+    competition: "Premier League",
+    score: "2 - 2",
+    status: "completed",
+    venue: "Etihad Stadium",
+    attendance: "55,000"
+  },
+  {
+    id: 12,
+    homeTeam: "Bayer Leverkusen",
+    awayTeam: "RB Leipzig",
+    date: "2024-05-05T14:30:00",
+    competition: "Bundesliga",
+    score: "3 - 2",
+    status: "completed",
+    venue: "BayArena",
+    attendance: "30,000"
+  },
+  {
+    id: 13,
+    homeTeam: "Napoli",
+    awayTeam: "AC Milan",
+    date: "2024-05-08T19:45:00",
+    competition: "Serie A",
+    score: "0 - 1",
+    status: "completed",
+    venue: "Diego Armando Maradona Stadium",
+    attendance: "47,000"
+  },
+  {
+    id: 14,
+    homeTeam: "Lyon",
+    awayTeam: "Monaco",
+    date: "2024-05-09T20:00:00",
+    competition: "Ligue 1",
+    score: "2 - 2",
+    status: "completed",
+    venue: "Groupama Stadium",
+    attendance: "49,000"
+  },
+  {
+    id: 15,
+    homeTeam: "Barcelona",
+    awayTeam: "Sevilla",
+    date: "2024-05-21T20:00:00",
+    competition: "La Liga",
+    status: "upcoming",
+    venue: "Camp Nou",
+    tickets: "Available"
+  },
+  {
+    id: 16,
+    homeTeam: "Dortmund",
+    awayTeam: "Eintracht Frankfurt",
+    date: "2024-05-24T19:30:00",
+    competition: "Bundesliga",
+    status: "upcoming",
+    venue: "Signal Iduna Park",
+    tickets: "Available"
+  },
+  {
+    id: 17,
+    homeTeam: "Juventus",
+    awayTeam: "Inter Milan",
+    date: "2024-05-26T19:45:00",
+    competition: "Serie A",
+    status: "upcoming",
+    venue: "Allianz Stadium",
+    tickets: "Limited Availability"
+  },
+  {
+    id: 18,
+    homeTeam: "PSG",
+    awayTeam: "Lyon",
+    date: "2024-05-28T20:00:00",
+    competition: "Ligue 1",
+    status: "upcoming",
+    venue: "Parc des Princes",
+    tickets: "Available"
   }
 ];
 
 export const MatchCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState(today);
   const [viewMode, setViewMode] = useState<'upcoming' | 'past'>('upcoming');
 
   const navigateDate = (direction: 'prev' | 'next') => {
@@ -93,7 +216,7 @@ export const MatchCalendar = () => {
 
   // Filter matches by selected date and view mode
   const todayMatches = calendarMatchData.filter(match => {
-    const matchDate = new Date(match.date);
+    const matchDate = parseISO(match.date);
     return isSameDay(matchDate, selectedDate);
   });
 
@@ -148,57 +271,59 @@ export const MatchCalendar = () => {
         </div>
       </div>
       
-      <TabsContent value="upcoming" className="mt-0 pt-0">
-        <ScrollArea className="h-[400px]">
-          <div className="space-y-5">
-            {upcomingMatches.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No upcoming matches scheduled.</p>
-            ) : (
-              upcomingMatches.map((match, index) => (
-                <motion.div 
-                  key={match.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <div className="mb-2">
-                    <p className="text-sm text-muted-foreground">
-                      {format(new Date(match.date), 'EEEE, MMMM d')}
-                    </p>
-                  </div>
-                  <MatchCard match={match} />
-                </motion.div>
-              ))
-            )}
-          </div>
-        </ScrollArea>
-      </TabsContent>
-      
-      <TabsContent value="past" className="mt-0 pt-0">
-        <ScrollArea className="h-[400px]">
-          <div className="space-y-5">
-            {pastMatches.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No past matches to display.</p>
-            ) : (
-              pastMatches.map((match, index) => (
-                <motion.div 
-                  key={match.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <div className="mb-2">
-                    <p className="text-sm text-muted-foreground">
-                      {format(new Date(match.date), 'EEEE, MMMM d')}
-                    </p>
-                  </div>
-                  <MatchCard match={match} />
-                </motion.div>
-              ))
-            )}
-          </div>
-        </ScrollArea>
-      </TabsContent>
+      <Tabs value={viewMode}>
+        <TabsContent value="upcoming" className="mt-0 pt-0">
+          <ScrollArea className="h-[400px]">
+            <div className="space-y-5">
+              {upcomingMatches.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">No upcoming matches scheduled.</p>
+              ) : (
+                upcomingMatches.map((match, index) => (
+                  <motion.div 
+                    key={match.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <div className="mb-2">
+                      <p className="text-sm text-muted-foreground">
+                        {format(parseISO(match.date), 'EEEE, MMMM d')}
+                      </p>
+                    </div>
+                    <MatchCard match={match} />
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </ScrollArea>
+        </TabsContent>
+        
+        <TabsContent value="past" className="mt-0 pt-0">
+          <ScrollArea className="h-[400px]">
+            <div className="space-y-5">
+              {pastMatches.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">No past matches to display.</p>
+              ) : (
+                pastMatches.map((match, index) => (
+                  <motion.div 
+                    key={match.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <div className="mb-2">
+                      <p className="text-sm text-muted-foreground">
+                        {format(parseISO(match.date), 'EEEE, MMMM d')}
+                      </p>
+                    </div>
+                    <MatchCard match={match} />
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </ScrollArea>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
@@ -212,16 +337,19 @@ type MatchCardProps = {
     competition: string;
     score?: string;
     status: string;
+    venue: string;
+    tickets?: string;
+    attendance?: string;
   };
 };
 
 const MatchCard = ({ match }: MatchCardProps) => {
-  const matchTime = format(new Date(match.date), 'HH:mm');
+  const matchTime = format(parseISO(match.date), 'HH:mm');
   
   return (
     <Card className="hover:bg-secondary/20 transition-colors">
       <CardContent className="p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <Badge variant="outline" className="mb-2">{match.competition}</Badge>
             <div className="flex items-center gap-3">
@@ -234,6 +362,9 @@ const MatchCard = ({ match }: MatchCardProps) => {
                 )}
               </div>
               <div className="w-[120px] font-medium">{match.awayTeam}</div>
+            </div>
+            <div className="mt-2 text-xs text-muted-foreground">
+              <p>{match.venue} • {match.status === 'completed' ? `Attendance: ${match.attendance}` : `Tickets: ${match.tickets}`}</p>
             </div>
           </div>
           <div>

@@ -1,8 +1,15 @@
+
 import { motion } from "framer-motion";
-import { BarChart3 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BarChart3, Trophy } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export const Navbar = () => {
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground";
+  };
+  
   return (
     <motion.nav 
       initial={{ opacity: 0, y: -20 }}
@@ -16,16 +23,20 @@ export const Navbar = () => {
             <span className="font-bold text-xl">Estrella</span>
           </Link>
           <div className="hidden md:flex space-x-6">
-            <Link to="/matches" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/matches" className={`transition-colors ${isActive('/matches')}`}>
               Matches
             </Link>
-            <Link to="/teams" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/teams" className={`transition-colors ${isActive('/teams')}`}>
               Teams
             </Link>
-            <Link to="/players" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/standings" className={`transition-colors flex items-center gap-1 ${isActive('/standings')}`}>
+              <Trophy className="h-4 w-4" />
+              Standings
+            </Link>
+            <Link to="/players" className={`transition-colors ${isActive('/players')}`}>
               Players
             </Link>
-            <Link to="/stats" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/stats" className={`transition-colors ${isActive('/stats')}`}>
               Statistics
             </Link>
           </div>

@@ -2,15 +2,18 @@
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { motion } from "framer-motion";
-import { Search, Calendar as CalendarIcon } from "lucide-react";
+import { Search, Calendar as CalendarIcon, Trophy, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { TeamRankings } from "@/components/TeamRankings";
 import { MatchCalendar } from "@/components/MatchCalendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Teams = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<string>("standings");
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,7 +29,7 @@ const Teams = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full sm:w-auto">
             <TabsList>
               <TabsTrigger value="standings" className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trophy"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V8a2 2 0 0 1 4 0v14"/><path d="M6 12h12"/></svg>
+                <Trophy className="h-4 w-4" />
                 Standings
               </TabsTrigger>
               <TabsTrigger value="calendar" className="flex items-center gap-2">
@@ -47,10 +50,14 @@ const Teams = () => {
           />
         </div>
 
-        {/* Fix: Wrap TabsContent components in the same Tabs component */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsContent value="standings" className="mt-6 space-y-6">
             <TeamRankings searchQuery={searchQuery} />
+            <div className="flex justify-center mt-8">
+              <Button onClick={() => navigate('/standings')} className="flex items-center gap-2">
+                View Full Standings <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
           </TabsContent>
           
           <TabsContent value="calendar" className="mt-6">
