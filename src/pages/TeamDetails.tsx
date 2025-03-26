@@ -1,12 +1,12 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Trophy, Activity, Calendar, Users } from "lucide-react";
+import { ArrowLeft, Trophy, Activity, Calendar, Users, Football, Flag } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { 
   BarChart, 
   Bar, 
@@ -23,6 +23,10 @@ import {
   Cell
 } from "recharts";
 import { getTeamById, Team, leagueData } from "@/components/TeamRankings";
+import { PlayerLineup } from "@/components/PlayerLineup";
+import { MatchHistory } from "@/components/MatchHistory";
+import { UpcomingGames } from "@/components/UpcomingGames";
+import { FormationDisplay } from "@/components/FormationDisplay";
 
 const TeamDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,12 +53,10 @@ const TeamDetails = () => {
     );
   }
 
-  // Find the league this team belongs to
   const teamLeague = Object.entries(leagueData).find(([_, teams]) => 
     teams.some(t => t.id === teamId)
   )?.[0] || "";
 
-  // Create form data (last 5 matches)
   const formData = [
     { match: "vs Liverpool", result: "W", score: "2-1" },
     { match: "vs Arsenal", result: "D", score: "1-1" },
@@ -63,13 +65,11 @@ const TeamDetails = () => {
     { match: "vs Tottenham", result: "W", score: "2-0" }
   ];
 
-  // Create goal distribution data
   const goalDistributionData = [
     { name: "Home", value: team.goalsFor * 0.6 },
     { name: "Away", value: team.goalsFor * 0.4 }
   ];
 
-  // Create season progress data
   const seasonProgressData = [
     { gameweek: 1, points: 3 },
     { gameweek: 2, points: 6 },
@@ -102,7 +102,6 @@ const TeamDetails = () => {
     { gameweek: 29, points: team.points }
   ];
 
-  // Create comparison data for team vs league average
   const comparisonData = [
     { name: "Goals Scored", team: team.goalsFor, average: 48 },
     { name: "Goals Conceded", team: team.goalsAgainst, average: 40 },
@@ -111,7 +110,6 @@ const TeamDetails = () => {
     { name: "Losses", team: team.losses, average: 6 }
   ];
 
-  // Colors for the PieChart
   const COLORS = ['#4f46e5', '#e11d48'];
 
   return (
@@ -145,10 +143,12 @@ const TeamDetails = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full grid grid-cols-3">
+          <TabsList className="w-full grid grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="stats">Statistics</TabsTrigger>
-            <TabsTrigger value="form">Form</TabsTrigger>
+            <TabsTrigger value="players">Players</TabsTrigger>
+            <TabsTrigger value="matches">Matches</TabsTrigger>
+            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+            <TabsTrigger value="formation">Formation</TabsTrigger>
           </TabsList>
           
           <TabsContent value="overview" className="space-y-6">
@@ -371,6 +371,22 @@ const TeamDetails = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          
+          <TabsContent value="players" className="space-y-6">
+            <PlayerLineup teamId={teamId} />
+          </TabsContent>
+          
+          <TabsContent value="matches" className="space-y-6">
+            <MatchHistory teamId={teamId} />
+          </TabsContent>
+          
+          <TabsContent value="upcoming" className="space-y-6">
+            <UpcomingGames teamId={teamId} />
+          </TabsContent>
+          
+          <TabsContent value="formation" className="space-y-6">
+            <FormationDisplay teamId={teamId} />
+          </TabsContent>
         </Tabs>
       </motion.div>
     </div>
@@ -379,7 +395,6 @@ const TeamDetails = () => {
 
 export default TeamDetails;
 
-// Helper function to generate formatted date strings
 function format(date: Date, formatString: string): string {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const day = date.getDate().toString().padStart(2, '0');
@@ -389,7 +404,6 @@ function format(date: Date, formatString: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-// Helper function to subtract days from a date
 function subDays(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(date.getDate() - days);
