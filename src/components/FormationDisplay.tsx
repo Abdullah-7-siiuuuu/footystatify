@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Football } from "lucide-react";
+import { Users, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -168,7 +167,6 @@ const formationsByTeam: Record<number, Formation[]> = {
   ]
 };
 
-// Add default formations for other teams
 [4, 5, 6, 7, 8, 9, 10].forEach(teamId => {
   formationsByTeam[teamId] = [
     {
@@ -210,15 +208,12 @@ const formationsByTeam: Record<number, Formation[]> = {
 export const FormationDisplay = ({ teamId }: { teamId: number }) => {
   const [activeFormation, setActiveFormation] = useState<string>("4-3-3");
   
-  // Get formations for this team
   const formations = formationsByTeam[teamId] || [];
   const formation = formations.find(f => f.name === activeFormation) || formations[0];
   
-  // Get starters and substitutes
   const starters = formation.players.filter(p => p.isStarter);
   const substitutes = formation.players.filter(p => !p.isStarter);
   
-  // Get player rating color
   const getRatingColor = (rating: number): string => {
     if (rating >= 8.5) return "text-emerald-500";
     if (rating >= 8.0) return "text-green-500";
@@ -252,21 +247,15 @@ export const FormationDisplay = ({ teamId }: { teamId: number }) => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8">
               <div className="relative h-[500px] bg-emerald-900 rounded-lg p-4 overflow-hidden">
-                {/* Field markings */}
                 <div className="absolute inset-0 flex flex-col">
-                  {/* Center circle */}
                   <div className="absolute left-1/2 top-1/2 w-[100px] h-[100px] border-2 border-white/40 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-                  {/* Center line */}
                   <div className="absolute left-0 top-1/2 w-full h-0.5 bg-white/40 transform -translate-y-1/2"></div>
-                  {/* Penalty areas */}
                   <div className="absolute left-1/2 top-[5%] w-[200px] h-[80px] border-2 border-white/40 transform -translate-x-1/2"></div>
                   <div className="absolute left-1/2 bottom-[5%] w-[200px] h-[80px] border-2 border-white/40 transform -translate-x-1/2"></div>
-                  {/* Goal lines */}
                   <div className="absolute left-1/2 top-0 w-[100px] h-2 bg-white transform -translate-x-1/2"></div>
                   <div className="absolute left-1/2 bottom-0 w-[100px] h-2 bg-white transform -translate-x-1/2"></div>
                 </div>
                 
-                {/* Players */}
                 {starters.map(player => {
                   const coords = formation.coordinates[player.id];
                   if (!coords) return null;
@@ -303,7 +292,7 @@ export const FormationDisplay = ({ teamId }: { teamId: number }) => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Football className="h-4 w-4 text-primary" />
+                    <CircleDot className="h-4 w-4 text-primary" />
                     Squad List
                   </CardTitle>
                 </CardHeader>

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Trophy, Activity, Calendar, Users, Football, Flag } from "lucide-react";
+import { ArrowLeft, Trophy, Activity, Calendar as CalendarIcon, Users, CircleDot, Flag } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -361,7 +361,7 @@ const TeamDetails = () => {
                       </div>
                       <div className="mt-2 text-sm text-muted-foreground">
                         <p className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2" />
+                          <CalendarIcon className="h-4 w-4 mr-2" />
                           {["Old Trafford", "Emirates Stadium", "Tottenham Hotspur Stadium", "St. James Park", "Amex Stadium"][idx]}
                         </p>
                       </div>

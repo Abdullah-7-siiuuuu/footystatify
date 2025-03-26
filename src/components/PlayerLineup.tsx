@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Football, Search, Flag } from "lucide-react";
+import { Search, Flag, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Types for players
@@ -123,7 +123,7 @@ export const PlayerLineup = ({ teamId }: { teamId: number }) => {
         <Card className="w-full md:w-3/4">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl flex items-center gap-2">
-              <Football className="h-5 w-5 text-primary" />
+              <CircleDot className="h-5 w-5 text-primary" />
               Current Squad
             </CardTitle>
           </CardHeader>
