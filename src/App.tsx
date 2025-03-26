@@ -13,6 +13,7 @@ import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
 import TeamDetails from "./pages/TeamDetails";
 import Standings from "./pages/Standings";
+import PlayerStats from "./pages/PlayerStats";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/players" element={<Players />} />
+            <Route path="/players/:id" element={<PlayerStats />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:id" element={<TeamDetails />} />
             <Route path="/matches" element={<Matches />} />
