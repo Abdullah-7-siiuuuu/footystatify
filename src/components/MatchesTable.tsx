@@ -1,3 +1,4 @@
+
 import {
   Table,
   TableBody,
@@ -731,4 +732,22 @@ export const MatchesTable = () => {
                         </div>
                         <div className="p-4 bg-secondary/30 rounded-lg">
                           <h4 className="font-medium flex items-center gap-2 mb-2">
-                            <AlertCircle className="h-4 w-4 text-yellow-500"
+                            <AlertCircle className="h-4 w-4 text-yellow-500" />
+                            Key Factors
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Possession and passing accuracy are the strongest indicators of match outcome.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
