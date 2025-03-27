@@ -167,7 +167,7 @@ export const UseMockData = {
           ],
           xGPerMatch: 0.68,
         },
-        image: "/placeholder.svg"
+        image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=400&fit=crop&q=80"
       },
       {
         id: 2,
@@ -202,7 +202,7 @@ export const UseMockData = {
           ],
           xGPerMatch: 0.42,
         },
-        image: "/placeholder.svg"
+        image: "https://images.unsplash.com/photo-1632150403063-b067959aed6d?w=400&h=400&fit=crop&q=80"
       },
       {
         id: 3,
@@ -237,7 +237,252 @@ export const UseMockData = {
           ],
           xGPerMatch: 0.12,
         },
-        image: "/placeholder.svg"
+        image: "https://images.unsplash.com/photo-1605235186583-a8272b61f9fe?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 4,
+        name: "Erling Haaland",
+        team: "Manchester City",
+        position: "Forward",
+        stats: {
+          goals: 27,
+          assists: 5,
+          matches: 26,
+        },
+        detailedStats: {
+          passingAccuracy: 76,
+          shotsOnTarget: 58,
+          tacklesWon: 12,
+          possession: 42,
+          minutesPlayed: 2230,
+          distanceCovered: 236.8,
+          yellowCards: 3,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 8.9 },
+            { match: "vs CHE", rating: 7.6 },
+            { match: "vs LIV", rating: 9.2 },
+            { match: "vs TOT", rating: 8.5 },
+            { match: "vs MUN", rating: 8.7 },
+          ],
+          heatmap: [
+            { zone: "Center", value: 80 },
+            { zone: "Left Wing", value: 10 },
+            { zone: "Right Wing", value: 10 },
+          ],
+          xGPerMatch: 0.98,
+        },
+        image: "https://images.unsplash.com/photo-1560012057-4372e14c5085?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 5,
+        name: "Mohammed Salah",
+        team: "Liverpool",
+        position: "Forward",
+        stats: {
+          goals: 19,
+          assists: 9,
+          matches: 29,
+        },
+        detailedStats: {
+          passingAccuracy: 82,
+          shotsOnTarget: 46,
+          tacklesWon: 18,
+          possession: 54,
+          minutesPlayed: 2520,
+          distanceCovered: 258.4,
+          yellowCards: 1,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 8.4 },
+            { match: "vs CHE", rating: 7.8 },
+            { match: "vs MCI", rating: 8.6 },
+            { match: "vs TOT", rating: 7.9 },
+            { match: "vs MUN", rating: 8.8 },
+          ],
+          heatmap: [
+            { zone: "Right Wing", value: 75 },
+            { zone: "Center", value: 20 },
+            { zone: "Left Wing", value: 5 },
+          ],
+          xGPerMatch: 0.76,
+        },
+        image: "https://images.unsplash.com/photo-1564415900645-99cdb8dcba34?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 6,
+        name: "Trent Alexander-Arnold",
+        team: "Liverpool",
+        position: "Defender",
+        stats: {
+          goals: 2,
+          assists: 12,
+          matches: 27,
+        },
+        detailedStats: {
+          passingAccuracy: 86,
+          shotsOnTarget: 18,
+          tacklesWon: 42,
+          possession: 64,
+          minutesPlayed: 2380,
+          distanceCovered: 267.2,
+          yellowCards: 3,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 8.1 },
+            { match: "vs CHE", rating: 7.5 },
+            { match: "vs MCI", rating: 7.9 },
+            { match: "vs TOT", rating: 8.3 },
+            { match: "vs MUN", rating: 7.6 },
+          ],
+          heatmap: [
+            { zone: "Right Back", value: 70 },
+            { zone: "Right Wing", value: 25 },
+            { zone: "Center", value: 5 },
+          ],
+          xGPerMatch: 0.22,
+        },
+        image: "https://images.unsplash.com/photo-1552699498-ec96cf4164d5?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 7,
+        name: "Phil Foden",
+        team: "Manchester City",
+        position: "Midfielder",
+        stats: {
+          goals: 11,
+          assists: 8,
+          matches: 25,
+        },
+        detailedStats: {
+          passingAccuracy: 85,
+          shotsOnTarget: 34,
+          tacklesWon: 28,
+          possession: 67,
+          minutesPlayed: 2100,
+          distanceCovered: 238.5,
+          yellowCards: 2,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 8.7 },
+            { match: "vs CHE", rating: 7.9 },
+            { match: "vs LIV", rating: 8.2 },
+            { match: "vs TOT", rating: 8.5 },
+            { match: "vs MCI", rating: 8.9 },
+          ],
+          heatmap: [
+            { zone: "Left Wing", value: 25 },
+            { zone: "Center", value: 60 },
+            { zone: "Right Wing", value: 15 },
+          ],
+          xGPerMatch: 0.52,
+        },
+        image: "https://images.unsplash.com/photo-1589725391918-9da066fade29?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 8,
+        name: "Martin Ødegaard",
+        team: "Arsenal",
+        position: "Midfielder",
+        stats: {
+          goals: 9,
+          assists: 11,
+          matches: 28,
+        },
+        detailedStats: {
+          passingAccuracy: 87,
+          shotsOnTarget: 26,
+          tacklesWon: 32,
+          possession: 70,
+          minutesPlayed: 2480,
+          distanceCovered: 272.6,
+          yellowCards: 2,
+          redCards: 0,
+          formTrend: [
+            { match: "vs LIV", rating: 8.3 },
+            { match: "vs CHE", rating: 8.6 },
+            { match: "vs MCI", rating: 7.8 },
+            { match: "vs TOT", rating: 9.0 },
+            { match: "vs MUN", rating: 8.2 },
+          ],
+          heatmap: [
+            { zone: "Center", value: 75 },
+            { zone: "Right Wing", value: 15 },
+            { zone: "Left Wing", value: 10 },
+          ],
+          xGPerMatch: 0.38,
+        },
+        image: "https://images.unsplash.com/photo-1624280157150-4d1ed8632989?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 9,
+        name: "Bruno Fernandes",
+        team: "Manchester United",
+        position: "Midfielder",
+        stats: {
+          goals: 7,
+          assists: 12,
+          matches: 29,
+        },
+        detailedStats: {
+          passingAccuracy: 83,
+          shotsOnTarget: 36,
+          tacklesWon: 29,
+          possession: 62,
+          minutesPlayed: 2610,
+          distanceCovered: 283.2,
+          yellowCards: 5,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 7.6 },
+            { match: "vs CHE", rating: 8.1 },
+            { match: "vs LIV", rating: 6.8 },
+            { match: "vs TOT", rating: 8.4 },
+            { match: "vs MCI", rating: 7.2 },
+          ],
+          heatmap: [
+            { zone: "Center", value: 80 },
+            { zone: "Right Wing", value: 10 },
+            { zone: "Left Wing", value: 10 },
+          ],
+          xGPerMatch: 0.36,
+        },
+        image: "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?w=400&h=400&fit=crop&q=80"
+      },
+      {
+        id: 10,
+        name: "Son Heung-min",
+        team: "Tottenham Hotspur",
+        position: "Forward",
+        stats: {
+          goals: 14,
+          assists: 6,
+          matches: 27,
+        },
+        detailedStats: {
+          passingAccuracy: 80,
+          shotsOnTarget: 38,
+          tacklesWon: 21,
+          possession: 52,
+          minutesPlayed: 2390,
+          distanceCovered: 256.8,
+          yellowCards: 2,
+          redCards: 0,
+          formTrend: [
+            { match: "vs ARS", rating: 7.9 },
+            { match: "vs CHE", rating: 8.3 },
+            { match: "vs LIV", rating: 7.5 },
+            { match: "vs MCI", rating: 8.6 },
+            { match: "vs MUN", rating: 8.0 },
+          ],
+          heatmap: [
+            { zone: "Left Wing", value: 60 },
+            { zone: "Center", value: 35 },
+            { zone: "Right Wing", value: 5 },
+          ],
+          xGPerMatch: 0.58,
+        },
+        image: "https://images.unsplash.com/photo-1583312696073-a483cbcb3705?w=400&h=400&fit=crop&q=80"
       }
     ];
   },
@@ -295,7 +540,6 @@ export const UseMockData = {
     ];
   },
   
-  // Utility to simulate API delay for development
   delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
