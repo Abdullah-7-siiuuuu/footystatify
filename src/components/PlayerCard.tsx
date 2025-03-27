@@ -80,7 +80,6 @@ export const PlayerCard = ({ player }: PlayerCardProps) => {
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center gap-4 pb-2">
           <Avatar className="h-16 w-16 border-2 border-primary">
-            <AvatarImage src={player.image || "/placeholder.svg"} alt={player.name} />
             <AvatarFallback>{player.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
