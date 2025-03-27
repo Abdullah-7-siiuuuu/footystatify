@@ -6,7 +6,7 @@ import { PlayerCard } from "@/components/PlayerCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
-import { PlayerService, UseMockData, Player } from "@/services/api";
+import { PlayerService, UseMockData } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 

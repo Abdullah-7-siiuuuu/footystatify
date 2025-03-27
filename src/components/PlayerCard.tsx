@@ -9,13 +9,13 @@ import { ChevronDown, ChevronUp, TrendingUp, Award, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface PlayerStats {
+export interface PlayerStats {
   goals: number;
   assists: number;
   matches: number;
 }
 
-interface PlayerDetailedStats {
+export interface PlayerDetailedStats {
   passingAccuracy: number;
   shotsOnTarget: number;
   tacklesWon: number;
@@ -29,7 +29,7 @@ interface PlayerDetailedStats {
   xGPerMatch: number;
 }
 
-interface Player {
+export interface Player {
   id: number;
   name: string;
   team: string;
@@ -39,7 +39,7 @@ interface Player {
   image: string;
 }
 
-interface PlayerCardProps {
+export interface PlayerCardProps {
   player: Player;
 }
 
@@ -221,3 +221,4 @@ export const PlayerCard = ({ player }: PlayerCardProps) => {
     </motion.div>
   );
 };
+
