@@ -1,3 +1,4 @@
+
 import { Trophy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -34,11 +35,12 @@ const leagueData = {
     { id: 20, name: "Atalanta", points: 51, position: 5, played: 29, wins: 15, draws: 6, losses: 8, goalsFor: 55, goalsAgainst: 33, goalDifference: 22, badge: "https://upload.wikimedia.org/wikipedia/en/6/66/AtalantaBC.svg", primaryColor: "#1E71B8" },
   ],
   "Champions League": [
-    { id: 21, name: "Bayern Munich", points: 15, position: 1, played: 6, wins: 5, draws: 0, losses: 1, goalsFor: 18, goalsAgainst: 5, goalDifference: 13, badge: "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg", primaryColor: "#DC052D" },
-    { id: 22, name: "Manchester City", points: 13, position: 2, played: 6, wins: 4, draws: 1, losses: 1, goalsFor: 15, goalsAgainst: 7, goalDifference: 8, badge: "https://resources.premierleague.com/premierleague/badges/t43.png", primaryColor: "#6CABDD" },
-    { id: 23, name: "Real Madrid", points: 12, position: 3, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 12, goalsAgainst: 7, goalDifference: 5, badge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg", primaryColor: "#FFFFFF" },
-    { id: 24, name: "Liverpool", points: 12, position: 4, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 13, goalsAgainst: 9, goalDifference: 4, badge: "https://resources.premierleague.com/premierleague/badges/t14.png", primaryColor: "#C8102E" },
-    { id: 25, name: "PSG", points: 10, position: 5, played: 6, wins: 3, draws: 1, losses: 2, goalsFor: 9, goalsAgainst: 8, goalDifference: 1, badge: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", primaryColor: "#004170" },
+    // Ensure these teams don't have duplicate IDs with the teams above
+    { id: 21, name: "Paris Saint-Germain", points: 15, position: 1, played: 6, wins: 5, draws: 0, losses: 1, goalsFor: 18, goalsAgainst: 5, goalDifference: 13, badge: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", primaryColor: "#004170" },
+    { id: 22, name: "Atletico Madrid", points: 13, position: 2, played: 6, wins: 4, draws: 1, losses: 1, goalsFor: 15, goalsAgainst: 7, goalDifference: 8, badge: "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg", primaryColor: "#CB3524", leagueAlsoIn: "La Liga" },
+    { id: 23, name: "Porto", points: 12, position: 3, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 12, goalsAgainst: 7, goalDifference: 5, badge: "https://upload.wikimedia.org/wikipedia/en/f/f1/FC_Porto.svg", primaryColor: "#0046A8" },
+    { id: 24, name: "Ajax", points: 12, position: 4, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 13, goalsAgainst: 9, goalDifference: 4, badge: "https://upload.wikimedia.org/wikipedia/en/7/79/Ajax_Amsterdam.svg", primaryColor: "#C4212A" },
+    { id: 25, name: "Benfica", points: 10, position: 5, played: 6, wins: 3, draws: 1, losses: 2, goalsFor: 9, goalsAgainst: 8, goalDifference: 1, badge: "https://upload.wikimedia.org/wikipedia/en/a/a2/SL_Benfica_logo.svg", primaryColor: "#E52E38" },
   ],
 };
 
@@ -57,6 +59,7 @@ export type Team = {
   goalDifference: number;
   badge?: string;
   primaryColor?: string;
+  leagueAlsoIn?: string;
 };
 
 export const getTeamById = (id: number): Team | undefined => {
@@ -65,6 +68,24 @@ export const getTeamById = (id: number): Team | undefined => {
     if (team) return team;
   }
   return undefined;
+};
+
+// Get unique teams for stats filtering
+export const getUniqueTeams = (): Team[] => {
+  const uniqueTeams = new Map<string, Team>();
+  
+  for (const [leagueName, teams] of Object.entries(leagueData)) {
+    for (const team of teams) {
+      if (!uniqueTeams.has(team.name)) {
+        uniqueTeams.set(team.name, {
+          ...team,
+          leagueAlsoIn: team.leagueAlsoIn
+        });
+      }
+    }
+  }
+  
+  return Array.from(uniqueTeams.values());
 };
 
 export { leagueData };
@@ -143,7 +164,19 @@ export const TeamRankings = ({ searchQuery = "" }: TeamRankingProps) => {
                         onClick={() => handleTeamClick(team.id)}
                       >
                         <td className="p-3 font-medium">{team.position}</td>
-                        <td className="p-3 font-medium">{team.name}</td>
+                        <td className="p-3 font-medium">
+                          <div className="flex items-center gap-2">
+                            {team.badge && (
+                              <img src={team.badge} alt={team.name} className="w-5 h-5 object-contain" />
+                            )}
+                            {team.name}
+                            {team.leagueAlsoIn && (
+                              <span className="text-xs text-muted-foreground ml-1">
+                                (Also in {team.leagueAlsoIn})
+                              </span>
+                            )}
+                          </div>
+                        </td>
                         <td className="p-3 text-center">{team.played}</td>
                         <td className="p-3 text-center">{team.wins}</td>
                         <td className="p-3 text-center">{team.draws}</td>
