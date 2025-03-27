@@ -19,7 +19,7 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  Tooltip, 
+  Tooltip as RechartsTooltip, 
   ResponsiveContainer, 
   LineChart as RechartsLineChart, 
   Line, 
@@ -50,7 +50,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Player } from "@/components/PlayerCard";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -270,9 +270,20 @@ const Stats = () => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [performanceRangeFilter, setPerformanceRangeFilter] = useState<[number, number]>([0, 100]);
   const [useAiSuggestions, setUseAiSuggestions] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
   
   // Get unique teams to prevent duplicates
-  const teams = useMemo(() => getUniqueTeams(), []);
+  const teams = useMemo(() => {
+    const allTeams = getUniqueTeams();
+    // Remove duplicates by creating a map using team name as key
+    const uniqueTeams = new Map();
+    allTeams.forEach(team => {
+      if (!uniqueTeams.has(team.name)) {
+        uniqueTeams.set(team.name, team);
+      }
+    });
+    return Array.from(uniqueTeams.values());
+  }, []);
   
   // Player metrics options
   const playerMetrics = [
@@ -375,6 +386,7 @@ const Stats = () => {
     
     setSavedViews([...savedViews, newView]);
     setCurrentViewName("");
+    setShowSaveDialog(false);
     
     toast.success("View Saved", {
       description: `You can quickly access "${currentViewName}" from the saved views section.`
@@ -542,7 +554,7 @@ const Stats = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip 
+              <RechartsTooltip 
                 formatter={(value, name, props) => {
                   return [value, entityType === "players" ? props.payload.team : name];
                 }}
@@ -567,7 +579,7 @@ const Stats = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip 
+              <RechartsTooltip 
                 formatter={(value, name, props) => {
                   return [value, entityType === "players" ? props.payload.team : name];
                 }}
@@ -601,7 +613,7 @@ const Stats = () => {
                   <Cell key={`cell-${index}`} fill={entry.color || COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip 
+              <RechartsTooltip 
                 formatter={(value, name, props) => {
                   return [value, entityType === "players" ? props.payload.team : name];
                 }}
@@ -635,7 +647,7 @@ const Stats = () => {
                 label={{ value: playerMetrics.find(m => m.value === scatterMetricY)?.label, angle: -90, position: 'left' }}
               />
               <ZAxis type="number" dataKey="z" range={[60, 200]} name="Matches" />
-              <Tooltip 
+              <RechartsTooltip 
                 cursor={{ strokeDasharray: '3 3' }}
                 formatter={(value, name, props) => {
                   if (name === 'x') return [value, playerMetrics.find(m => m.value === scatterMetricX)?.label];
@@ -1184,14 +1196,7 @@ const Stats = () => {
                               {team.badge && (
                                 <img src={team.badge} alt={team.name} className="w-4 h-4 object-contain" />
                               )}
-                              <div>
-                                <span>{team.name}</span>
-                                {team.leagueAlsoIn && (
-                                  <span className="text-xs text-muted-foreground block">
-                                    Also in {team.leagueAlsoIn}
-                                  </span>
-                                )}
-                              </div>
+                              <span>{team.name}</span>
                             </Label>
                           </div>
                         ))
@@ -1237,7 +1242,7 @@ const Stats = () => {
                         variant="outline" 
                         size="sm" 
                         className="mt-2"
-                        onClick={() => setCurrentViewName(`${entityType === "teams" ? "Team" : "Player"} Analysis ${new Date().toLocaleDateString()}`)}
+                        onClick={() => setShowSaveDialog(true)}
                       >
                         <Save className="h-4 w-4 mr-2" />
                         Save Current View
@@ -1260,7 +1265,12 @@ const Stats = () => {
                         </div>
                       ))}
                       
-                      <Button variant="ghost" size="sm" className="w-full mt-2">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="w-full mt-2"
+                        onClick={() => setShowSaveDialog(true)}
+                      >
                         <Save className="h-4 w-4 mr-2" />
                         Save Current View
                       </Button>
@@ -1268,28 +1278,6 @@ const Stats = () => {
                   )}
                 </CardContent>
               </Card>
-              
-              {currentViewName && (
-                <AlertDialog>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Save Current View</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Enter a name to save your current configuration for future reference.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <Input 
-                      placeholder="My Analysis View" 
-                      value={currentViewName}
-                      onChange={(e) => setCurrentViewName(e.target.value)}
-                    />
-                    <AlertDialogFooter>
-                      <AlertDialogCancel onClick={() => setCurrentViewName("")}>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleSaveView}>Save View</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              )}
               
               <Card>
                 <CardHeader className="pb-3">
@@ -1431,6 +1419,29 @@ const Stats = () => {
           </div>
         </motion.div>
       </div>
+      
+      {/* Save View Dialog */}
+      {showSaveDialog && (
+        <AlertDialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Save Current View</AlertDialogTitle>
+              <AlertDialogDescription>
+                Enter a name to save your current configuration for future reference.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <Input 
+              placeholder="My Analysis View" 
+              value={currentViewName}
+              onChange={(e) => setCurrentViewName(e.target.value)}
+            />
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setShowSaveDialog(false)}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleSaveView}>Save View</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 };
