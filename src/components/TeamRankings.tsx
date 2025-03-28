@@ -35,9 +35,8 @@ const leagueData = {
     { id: 20, name: "Atalanta", points: 51, position: 5, played: 29, wins: 15, draws: 6, losses: 8, goalsFor: 55, goalsAgainst: 33, goalDifference: 22, badge: "https://upload.wikimedia.org/wikipedia/en/6/66/AtalantaBC.svg", primaryColor: "#1E71B8" },
   ],
   "Champions League": [
-    // Ensure these teams don't have duplicate IDs with the teams above
     { id: 21, name: "Paris Saint-Germain", points: 15, position: 1, played: 6, wins: 5, draws: 0, losses: 1, goalsFor: 18, goalsAgainst: 5, goalDifference: 13, badge: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg", primaryColor: "#004170" },
-    { id: 22, name: "Atletico Madrid", points: 13, position: 2, played: 6, wins: 4, draws: 1, losses: 1, goalsFor: 15, goalsAgainst: 7, goalDifference: 8, badge: "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg", primaryColor: "#CB3524", leagueAlsoIn: "La Liga" },
+    { id: 22, name: "Real Madrid", points: 14, position: 2, played: 6, wins: 4, draws: 2, losses: 0, goalsFor: 16, goalsAgainst: 6, goalDifference: 10, badge: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg", primaryColor: "#FFFFFF", leagueAlsoIn: "La Liga" },
     { id: 23, name: "Porto", points: 12, position: 3, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 12, goalsAgainst: 7, goalDifference: 5, badge: "https://upload.wikimedia.org/wikipedia/en/f/f1/FC_Porto.svg", primaryColor: "#0046A8" },
     { id: 24, name: "Ajax", points: 12, position: 4, played: 6, wins: 4, draws: 0, losses: 2, goalsFor: 13, goalsAgainst: 9, goalDifference: 4, badge: "https://upload.wikimedia.org/wikipedia/en/7/79/Ajax_Amsterdam.svg", primaryColor: "#C4212A" },
     { id: 25, name: "Benfica", points: 10, position: 5, played: 6, wins: 3, draws: 1, losses: 2, goalsFor: 9, goalsAgainst: 8, goalDifference: 1, badge: "https://upload.wikimedia.org/wikipedia/en/a/a2/SL_Benfica_logo.svg", primaryColor: "#E52E38" },
@@ -77,9 +76,10 @@ export const getUniqueTeams = (): Team[] => {
   for (const [leagueName, teams] of Object.entries(leagueData)) {
     for (const team of teams) {
       if (!uniqueTeams.has(team.name)) {
+        // Create a new team object with all properties including the optional ones
         uniqueTeams.set(team.name, {
           ...team,
-          leagueAlsoIn: team.leagueAlsoIn
+          leagueAlsoIn: team.leagueAlsoIn || undefined
         });
       }
     }

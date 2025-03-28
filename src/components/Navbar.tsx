@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { BarChart3, Trophy, Users } from "lucide-react";
+import { BarChart3, Trophy, Users, Calendar, Shield, BarChart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ModeToggle } from "@/components/ModeToggle";
 
@@ -24,21 +24,25 @@ export const Navbar = () => {
             <span className="font-bold text-xl">Estrella</span>
           </Link>
           <div className="hidden md:flex space-x-6">
-            <Link to="/matches" className={`transition-colors ${isActive('/matches')}`}>
-              Matches
+            <Link to="/matches" className={`transition-colors flex items-center gap-1 ${isActive('/matches')}`}>
+              <Calendar className="h-4 w-4" />
+              <span>Matches</span>
             </Link>
-            <Link to="/teams" className={`transition-colors ${isActive('/teams')}`}>
-              Teams
+            <Link to="/teams" className={`transition-colors flex items-center gap-1 ${isActive('/teams')}`}>
+              <Shield className="h-4 w-4" />
+              <span>Teams</span>
             </Link>
             <Link to="/standings" className={`transition-colors flex items-center gap-1 ${isActive('/standings')}`}>
               <Trophy className="h-4 w-4" />
-              Standings
+              <span>Standings</span>
             </Link>
-            <Link to="/players" className={`transition-colors ${isActive('/players')}`}>
-              Players
+            <Link to="/players" className={`transition-colors flex items-center gap-1 ${isActive('/players')}`}>
+              <Users className="h-4 w-4" />
+              <span>Players</span>
             </Link>
-            <Link to="/stats" className={`transition-colors ${isActive('/stats')}`}>
-              Statistics
+            <Link to="/stats" className={`transition-colors flex items-center gap-1 ${isActive('/stats')}`}>
+              <BarChart className="h-4 w-4" />
+              <span>Statistics</span>
             </Link>
           </div>
           <div>
